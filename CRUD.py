@@ -13,13 +13,15 @@ def cria_cursor(con):
 def cria_tabela(cur):
     try:
         sql_create = " CREATE TABLE Cartas"\
-                    " (nome varchar(100) primary key, "\
+                    " (id integer primary key,"\
+                    "nome varchar(100), "\
                     "preco real, "\
                     "qtd integer, "\
                     "estado varchar(2))"
         cur.execute(sql_create)
     except sqlite3.OperationalError:
-        pass
+        print("A tabela já foi criada ou houve um problema ao criar a Tabela."\
+            "\nUse a opção 1 ou 5 para testar a tabela")
 
 def escolher():
     print ("[1] Adicionar carta \n[2] "\
@@ -30,8 +32,8 @@ def escolher():
 
 def adicionar_carta(cur,carta):
     try:
-        sql_insert = "insert into Cartas values (?,?,?,?)"
-        registro = [carta.nome, carta.preco, carta.qtd, carta.estado]
+        sql_insert = "insert into Cartas values (?,?,?,?,?)"
+        registro = [None, carta.nome, carta.preco, carta.qtd, carta.estado]
         cur.execute(sql_insert,registro)
         con.commit()
         print("Carta adicionada com sucesso!")
